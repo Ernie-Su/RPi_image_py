@@ -8,8 +8,55 @@
 
 ## Preparation :
 ### OpenCV : 
+* Simple but not complete way :
+Can be installed on Windows and MacOS
+```
+pip3 install opencv-python
+pip3 install opencv_contrib-python
+```
 
-Not opencv-python but opencv, so that the whole content in git directory is complete.
+* Complex but complete way :
+1. To avoid errors during compiling, it's recommended to increase the swapfile size.
+```sudo vi /etc/dphys-swapfile``` and change ```CONF_SWAPSIZE=100``` to ```CONF_SWAPSIZE=2048```
+
+2. Reboot swapfile service.
+```
+sudo /etc/init.d/dphys-swapfile  stop
+sudo /etc/init.d/dphys-swapfile  start
+```
+You can use ```htop``` to check whether the swap size is incresed to 2048
+
+3. Install packages and libraries.
+```
+sudo apt-get install build-essential cmake
+sudo apt-get install libjpeg-dev libpng-dev libtiff5-dev libjasper-dev
+sudo apt-get install libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+sudo apt-get install libxvidcore-dev libx264-dev
+sudo apt-get install libgtk-3-dev libcanberra-gtk*
+sudo apt-get install libatlas-base-dev gfortran
+sudo apt-get install at-spi2-core
+sudo apt-get install python-dev python3-dev
+pip install numpy
+pip3 install numpy
+```
+Check whether there's no error during the installation.
+
+4. Download the source code of OpenCV
+```
+mkdir opencv
+cd opencv
+wget https://github.com/opencv/opencv/archive/master.zip
+wget https://github.com/opencv/opencv_contrib/archive/master.zip
+
+unzip master.zip
+unzip master.zip1
+
+cd opencv-master
+mkdir build
+cd build
+```
+
+5. Excute cmake.
 ```
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D CMAKE_INSTALL_PREFIX=/usr/local \
@@ -27,6 +74,28 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D PYTHON_EXECUTABLE=/usr/bin/python \
 ..
 ```
+
+6. Compile under /build. This may take around 50 minutes to finish.
+```
+make -j4
+```
+If no error ocurred, we can install it now.
+```
+sudo make install
+sudo ldconfig
+cd python_loader
+sudo python setup.py install
+sudo python3 setup.py install
+```
+
+7. Try to import cv2 in python
+```
+$ python3
+>>> import cv2
+>>> cv2.__version__
+'4.1.1-pre'
+```
+
 ### Gstreamer :
 
 With OpenCV, you don't have to import gst from gi.repository in python and write a lot of codes to do pipeline. You can use cv2.VideoWriter() to write frames into a file and also a gstreamer pipeline. 
