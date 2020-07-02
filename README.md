@@ -9,7 +9,9 @@
 ## Preparation :
 ### OpenCV : 
 * Simple but not complete way :
-Can be installed on Windows and MacOS
+
+Can be installed on Windows and MacOS.
+
 ```
 pip3 install opencv-python
 pip3 install opencv_contrib-python
@@ -74,6 +76,7 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 -D PYTHON_EXECUTABLE=/usr/bin/python \
 ..
 ```
+Check two places in the finish message. First, ```Non-free algorithm``` returns YES. Second, Python 2 and Python 3 do exist in the message.
 
 6. Compile under /build. This may take around 50 minutes to finish.
 ```
@@ -93,12 +96,12 @@ sudo python3 setup.py install
 $ python3
 >>> import cv2
 >>> cv2.__version__
-'4.1.1-pre'
+'4.4.0-pre'
 ```
 
 ### Gstreamer :
 
-With OpenCV, you don't have to import gst from gi.repository in python and write a lot of codes to do pipeline. You can use cv2.VideoWriter() to write frames into a file and also a gstreamer pipeline. 
+With OpenCV, you don't have to ```import gst from gi.repository``` in python and write a lot of codes to do pipeline. You can use cv2.VideoWriter() to write frames into a file and also a gstreamer pipeline. 
 
 ```
 out = cv2.VideoWriter('appsrc ! queue ! videoconvert ! video/x-raw ! omxh264enc ! video/x-h264 ! h264parse ! rtph264pay ! udpsink host=127.0.0.0 port=5000', cv2.CAP_GSTREAMER, 0, fps, (WIDTH, HEIGHT), True)
